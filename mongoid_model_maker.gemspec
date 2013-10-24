@@ -1,7 +1,7 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'mongoid_model_maker/version'
+require 'generators/mongoid_model_maker/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "mongoid_model_maker"
