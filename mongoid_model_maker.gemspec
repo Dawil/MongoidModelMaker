@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'generators/mongoid_model_maker/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "mongoid_model_maker"
+  spec.name          = "mongoid-model-maker"
   spec.version       = MongoidModelMaker::VERSION
   spec.authors       = ["David Wilcox"]
   spec.email         = ["dave@davidgwilcox.com"]
