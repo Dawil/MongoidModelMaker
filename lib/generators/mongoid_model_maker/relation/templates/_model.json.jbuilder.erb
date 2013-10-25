@@ -1,0 +1,1 @@
+json.extract! <%= child_name %><%= name.camelize.constantize.attribute_names.map { |a| ", :#{a}" unless a.starts_with?("_") }.join %>
