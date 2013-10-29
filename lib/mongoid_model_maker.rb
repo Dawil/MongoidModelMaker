@@ -1,4 +1,4 @@
-require "mongoid_model_maker/version"
+require "version"
 
 module MongoidModelMaker
   # Your code goes here...
