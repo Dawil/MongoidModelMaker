@@ -1,5 +1,9 @@
 require "version"
 
 module MongoidModelMaker
-  # Your code goes here...
+  class MyRailtie < Rails::Railtie
+    rake_tasks do
+      load "tasks/*.rake"
+    end
+  end
 end
