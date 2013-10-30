@@ -1,6 +1,6 @@
 require 'test/unit'
 require 'rubygems'
-require_relative '../lib/mongoid_model_maker'
+require_relative '../lib/generators/mongoid_model_maker'
 
 module MongoidModelMaker
   class GeneratorTest < Test::Unit::TestCase
@@ -8,7 +8,7 @@ module MongoidModelMaker
     end
     
     def test_version
-      assert MongoidModelMaker::VERSION == "0.0.2"
+      assert MongoidModelMaker::VERSION == "0.0.3"
     end
 
     def teardown
