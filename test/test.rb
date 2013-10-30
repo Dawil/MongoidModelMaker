@@ -8,7 +8,7 @@ module MongoidModelMaker
     end
     
     def test_version
-      assert MongoidModelMaker::VERSION == "0.0.1"
+      assert MongoidModelMaker::VERSION == "0.0.2"
     end
 
     def teardown
