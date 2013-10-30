@@ -1,13 +1,15 @@
-require 'test/unit'
+require 'minitest/unit'
+require 'minitest/autorun'
+require 'rails'
 require 'rubygems'
 require_relative '../lib/generators/mongoid_model_maker'
 
 module MongoidModelMaker
-  class GeneratorTest < Test::Unit::TestCase
+  class GeneratorTest < Rails::Generators::TestCase
     def setup
     end
     
-    def test_version
+    test "version" do
       assert MongoidModelMaker::VERSION == "0.0.3"
     end
 
