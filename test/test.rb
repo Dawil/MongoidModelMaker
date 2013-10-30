@@ -1,11 +1,10 @@
 require 'test/unit'
 require 'rubygems'
-require 'mongoid_model_maker'
+require_relative '../lib/mongoid_model_maker'
 
 module MongoidModelMaker
   class GeneratorTest < Test::Unit::TestCase
     def setup
-      puts "setup"
     end
     
     def test_version
@@ -13,7 +12,6 @@ module MongoidModelMaker
     end
 
     def teardown
-      puts 'sudoku'
     end
   end
 end
