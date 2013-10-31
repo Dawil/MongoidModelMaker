@@ -1,4 +1,5 @@
 require_relative "mongoid_model_maker/version"
+require_relative "mongoid_model_maker/from_yaml_generator"
 require_relative "mongoid_model_maker/relation/relation_generator"
 
 module MongoidModelMaker

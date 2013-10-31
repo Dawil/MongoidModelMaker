@@ -25,4 +25,5 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency 'thor'
   spec.add_runtime_dependency 'rails'
+  spec.add_runtime_dependency 'yaml'
 end
