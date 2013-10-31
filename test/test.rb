@@ -1,8 +1,4 @@
-require 'minitest/unit'
-require 'minitest/autorun'
-require 'rails'
-require 'rubygems'
-require_relative '../lib/generators/mongoid_model_maker'
+require_relative 'test_helper'
 
 module MongoidModelMaker
   class GeneratorTest < Rails::Generators::TestCase
@@ -10,18 +6,13 @@ module MongoidModelMaker
     destination File.expand_path("../tmp", File.dirname(__FILE__))
     setup :prepare_destination
 
-    def setup
-    end
-    
     test "version" do
       assert MongoidModelMaker::VERSION == "0.0.3"
     end
 
     test "from_yaml parent generator" do
       run_generator %w(test/fixtures/simple_model.yaml)
-      puts `cat tmp/lolercakes`
       assert MongoidModelMaker::FromYamlGenerator
-      assert false
     end
 
     test "models generator" do
@@ -40,7 +31,5 @@ module MongoidModelMaker
       assert MongoidModelMaker::GraphvizGenerator
     end
 
-    def teardown
-    end
   end
 end

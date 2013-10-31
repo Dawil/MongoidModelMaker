@@ -22,8 +22,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake"
   spec.add_development_dependency 'rails', '~> 4.0.0'
   spec.add_development_dependency 'thor'
+  spec.add_development_dependency 'mocha'
 
   spec.add_runtime_dependency 'thor'
   spec.add_runtime_dependency 'rails'
-  spec.add_runtime_dependency 'yaml'
 end

@@ -2,7 +2,7 @@ require 'rails'
 require 'rails/generators'
 
 module MongoidModelMaker
-  class RelationGenerator < FromYamlGenerator
+  class RelationGenerator < Rails::Generators::Base
     source_root File.expand_path('../templates', __FILE__)
 
     class_option :parent_class, type: :string, required: true, desc: "An optional parent class for mongoid relations"
