@@ -16,28 +16,28 @@ module MongoidModelMaker
       end
 
       model_relation
-      view_relation
-      factories_relation
+      #view_relation
+      #factories_relation
     end
 
   private
     def model_relation
       include_text = "include Mongoid::Timestamps\n"
-      n = options[:name]
+      n = options[:child]
       n = n.pluralize if relation_type == "embeds_many"
 
-      inject_into_file "app/models/#{parent_class.underscore}.rb", after: include_text do
+      inject_into_file "app/models/#{options[:parent].underscore}.rb", after: include_text do
 <<RUBY
 
-  #{relation_type} :#{n.underscore}#{", class_name: '#{name.camelize}'" if options.class_synonym}
+  #{options[:relation]} :#{n.underscore}#{", class_name: '#{options[:child].camelize}'" if options[:child_synonym]}
 
   accepts_nested_attributes_for :#{n.underscore}
 RUBY
       end
-      inject_into_file "app/models/#{name.underscore}.rb", after: include_text do
+      inject_into_file "app/models/#{options[:child].underscore}.rb", after: include_text do
 <<RUBY
 
-  embedded_in :#{parent_class.underscore}#{", inverse_of: :#{n.underscore}" if options.class_synonym}
+  embedded_in :#{options[:parent].underscore}#{", inverse_of: :#{n.underscore}" if options[:child_synonym]}
 
 RUBY
       end
