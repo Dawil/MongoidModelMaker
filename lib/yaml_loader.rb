@@ -17,7 +17,7 @@ module MongoidModelMaker
       @file.each_pair do |class_name, spec|
         args = class_name + ' ' + spec["fields"].map do |field|
           "#{field["name"]}:#{field["type"]}"
-        end.join(' ')
+        end.join(' ') + ' --timestamps'
         Rails::Generators.invoke "scaffold", args
       end
     end

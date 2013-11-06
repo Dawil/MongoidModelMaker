@@ -10,14 +10,14 @@ module MongoidModelMaker
 
     def test_scaffolds_once
       @models = MongoidModelMaker::Models.new File.join( __dir__, "fixtures/simple_model.yaml" )
-      Rails::Generators.expects(:invoke).with("scaffold", "person first:string last:string")
+      Rails::Generators.expects(:invoke).with("scaffold", "person first:string last:string --timestamps")
       @models.run_scaffolds
     end
 
     def test_scaffolds_twice
       @models = MongoidModelMaker::Models.new File.join( __dir__, "fixtures/double_model.yaml" )
-      Rails::Generators.expects(:invoke).with("scaffold", "person first:string last:string")
-      Rails::Generators.expects(:invoke).with("scaffold", "dog name:string breed:string")
+      Rails::Generators.expects(:invoke).with("scaffold", "person first:string last:string --timestamps")
+      Rails::Generators.expects(:invoke).with("scaffold", "dog name:string breed:string --timestamps")
       @models.run_scaffolds
     end
   end
