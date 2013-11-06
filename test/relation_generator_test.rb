@@ -2,15 +2,13 @@ require_relative 'test_helper'
 
 module MongoidModelMaker
   class RelationTest < Rails::Generators::TestCase
+    include MongoidModelMaker::TestUtils
     tests MongoidModelMaker::RelationGenerator
     destination File.expand_path("../tmp", File.dirname(__FILE__))
     setup :prepare_destination
 
-    def setup
-      @file_helper = MongoidModelMaker::FileHelper.new
-    end
-
     def create_double_models
+      # TODO: refactor this template initialization code
       @file_helper.vars = 
       { 
         model_name: "Dog",

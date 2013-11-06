@@ -6,10 +6,13 @@ require 'mocha/setup'
 require_relative '../lib/mongoid_model_maker'
 
 module MongoidModelMaker
-    def setup
-    end
-    
-    def teardown
+    module TestUtils
+      def setup
+        @file_helper = MongoidModelMaker::FileHelper.new
+      end
+      
+      def teardown
+      end
     end
 
     class FileHelper < Rails::Generators::Base
