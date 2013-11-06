@@ -5,42 +5,25 @@ module MongoidModelMaker
   class RelationGenerator < Rails::Generators::Base
     source_root File.expand_path('../templates', __FILE__)
 
-    class_option :parent_class, type: :string, required: true, desc: "An optional parent class for mongoid relations"
-    class_option :relation_type, type: :string, required: true, desc: "Type of mongoid relation"
-    class_option :class_synonym, type: :string, default: nil, desc: "An alternative name to reference the model by"
+    class_option :child, type: :string, required: true, desc: "Child class for mongoid relation"
+    class_option :parent, type: :string, required: true, desc: "Parent class for mongoid relation"
+    class_option :relation, type: :string, required: true, desc: "Type of mongoid relation"
+    class_option :child_synonym, type: :string, default: nil, desc: "An alternative name to reference the model by"
 
     def main
-      unless valid_relations.include? relation_type
-        raise ArgumentError, "Invalid relation type: #{relation_type}"
+      unless valid_relations.include? options[:relation]
+        raise ArgumentError, "Invalid relation type: #{options[:relation]}"
       end
 
-  #    invoke :scaffold
-  #    routes_relation
       model_relation
       view_relation
       factories_relation
     end
 
   private
-    def routes_relation
-      gsub_file 'config/routes.rb', "resources :#{name.pluralize.underscore}", ''
-      gsub_file 'config/routes.rb', "  resources :#{parent_class.pluralize.underscore}\n" do
-<<RUBY
-  resources :#{parent_class.pluralize.underscore} do
-  end
-RUBY
-      end
-
-      inject_into_file 'config/routes.rb', after: "resources :#{parent_class.pluralize.underscore} do\n" do
-<<RUBY
-    resources :#{name.pluralize.underscore}
-RUBY
-      end
-    end
-
     def model_relation
       include_text = "include Mongoid::Timestamps\n"
-      n = child_name
+      n = options[:name]
       n = n.pluralize if relation_type == "embeds_many"
 
       inject_into_file "app/models/#{parent_class.underscore}.rb", after: include_text do

@@ -20,5 +20,12 @@ module MongoidModelMaker
       Rails::Generators.expects(:invoke).with("scaffold", "dog name:string breed:string --timestamps")
       @models.run_scaffolds
     end
+
+    def test_relations
+      @models = MongoidModelMaker::Models.new File.join( __dir__, "fixtures/double_model.yaml" )
+      Rails::Generators.expects(:invoke)
+        .with("relations", "dog --parent_class=person")
+      @models.run_relations
+    end
   end
 end

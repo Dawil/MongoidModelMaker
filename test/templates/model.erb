@@ -1,0 +1,8 @@
+class <%= @vars[:model_name] %>
+  include Mongoid::Document
+  include Mongoid::Timestamps
+
+  <% @vars[:fields].keys.each do |field_name| %>
+  field <%= field_name.to_sym %>, type: <%= @vars[:fields][field_name] %>
+  <% end %>
+end

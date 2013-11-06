@@ -10,3 +10,6 @@ dog:
     type: string
   - name: breed
     type: string
+  relation:
+    parent: person
+    type: embeds_many
