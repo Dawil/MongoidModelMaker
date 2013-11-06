@@ -19,7 +19,7 @@ module MongoidModelMaker
       @file_helper.template "model.erb", "tmp/app/models/dog.rb"
       puts `cat tmp/app/models/dog.rb`
       run_generator %w(--child=dog --parent=person --relation=embeds_one)
-      assert_file "tmp/app/models/dog.rb", "embedded_in"
+      assert_file "tmp/app/models/dog.rb", "embedded_in :person"
     end
 
     #test "adds relation type to parent model" do
