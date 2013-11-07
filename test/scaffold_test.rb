@@ -6,8 +6,11 @@ module MongoidModelMaker
     destination File.expand_path("../tmp", File.dirname(__FILE__))
     setup :prepare_destination
 
+    test "loads yaml file" do
+      assert
+    end
     test "run scaffolds" do
-      Rails::Generators.expects(:invoke)
+      Rails::Generators.stubs(:invoke).once.with( "scaffold", %w(person first:string last:string) )
       run_generator %w(test/fixtures/simple_model.yaml)
     end
 

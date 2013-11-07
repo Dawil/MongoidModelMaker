@@ -21,13 +21,14 @@ module MongoidModelMaker
         Rails::Generators.invoke "scaffold", args
       end
     end
-    # run relations
-    #   invokes relation generator many times
+
     def run_relations
     end
-    # run factories
-    #   invokes factory generator many times
+
     def run_factories
+    end
+
+    def run_jbuilders
     end
   private
     # create model representation
