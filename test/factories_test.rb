@@ -8,7 +8,7 @@ module MongoidModelMaker
     setup :prepare_destination
 
     test "calls factory_girl generator correctly" do
-      Rails::Generators.expects(:invoke).with( "factory_girl:model", %w(person first:string last:string) )
+      Rails::Generators.stubs(:invoke).once.with( "factory_girl:model", %w(person first:string last:string) )
       run_generator %w(person first:string last:string)
     end
 
@@ -21,6 +21,7 @@ FactoryGirl.define do
   end
 end
 RUBY
+      Rails::Generators.stubs(:invoke).once
       run_generator %w(dog name:string breed:string --parent=person)
       assert_file "test/factories/person.rb", <<RUBY
 FactoryGirl.define do
@@ -42,6 +43,7 @@ FactoryGirl.define do
   end
 end
 RUBY
+      Rails::Generators.stubs(:invoke).once
       run_generator %w(dog name:string breed:string --parent=person --plural=true)
       assert_file "test/factories/person.rb", <<RUBY
 FactoryGirl.define do
@@ -67,6 +69,7 @@ FactoryGirl.define do
   end
 end
 RUBY
+      Rails::Generators.stubs(:invoke).once
       run_generator %w(person first:string last:string --read_factories=true)
       assert_file "test/factories/person.rb", <<RUBY
 FactoryGirl.define do
