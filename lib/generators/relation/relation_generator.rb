@@ -16,8 +16,6 @@ module MongoidModelMaker
       end
 
       model_relation
-      #view_relation
-      #factories_relation
     end
 
   private
@@ -40,37 +38,6 @@ RUBY
   embedded_in :#{options[:parent].underscore}#{", inverse_of: :#{n.underscore}" if options[:child_synonym]}
 
 RUBY
-      end
-    end
-
-    def view_relation
-      #html_relation
-      json_relation
-    end
-
-    def html_relation
-    end
-
-    def json_relation
-      template '_model.json.jbuilder.erb', "app/views/#{name.pluralize.underscore}/_#{name.underscore}.json.jbuilder"
-      partial_file = "app/views/#{parent_class.pluralize.underscore}/_#{parent_class.underscore}.json.jbuilder"
-      create_file partial_file unless File.exists? partial_file
-      append_to_file partial_file do
-        if relation_type == "embeds_one"
-<<RUBY
-json.#{child_name.underscore} do
-  json.partial! '#{name.pluralize.underscore}/#{name.underscore}.json.jbuilder', #{child_name.underscore}: #{parent_class.underscore}.#{child_name.underscore}
-end if #{parent_class.underscore}.#{child_name.underscore}
-RUBY
-        elsif relation_type == "embeds_many"
-<<RUBY
-json.#{child_name.pluralize.underscore} do
-  json.array!(#{parent_class.underscore}.#{child_name.pluralize.underscore}) do |#{child_name.underscore}|
-    json.partial! '#{name.pluralize.underscore}/#{name.underscore}.json.jbuilder', #{child_name.underscore}: #{child_name.underscore}
-  end
-end
-RUBY
-        end
       end
     end
 
