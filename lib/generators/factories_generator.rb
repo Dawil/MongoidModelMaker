@@ -14,8 +14,40 @@ module MongoidModelMaker
     end
 
     def add_singular_references_in_parent_factory
-      create_file "model", model
-      create_file "fields", fields.to_s
+      if options[:parent] and not options[:plural]
+        after_text = "factory :#{options[:parent].underscore} do\n"
+        inject_into_file "test/factories/#{options[:parent].underscore}.rb", after: after_text do
+<<RUBY
+    #{model.underscore} { FactoryGirl.build( :#{model.underscore} ) }
+RUBY
+        end
+      end
+    end
+
+    def add_plural_references_in_parent_factory
+      if options[:parent] and options[:plural]
+        after_text = "factory :#{options[:parent].underscore} do\n"
+        inject_into_file "test/factories/#{options[:parent].underscore}.rb", after: after_text do
+<<RUBY
+    after(:create) do |#{options[:parent].underscore}|
+      FactoryGirl.create_list( :#{model.underscore}, 3, #{options[:parent].underscore}: #{options[:parent].underscore} )
+    end
+RUBY
+        end
+      end
+    end
+
+    def add_custom_factory_code
+      if options[:read_factories]
+        fields.each do |field|
+          field_name = field.split(':').first
+          field_factory_code = "#{field_name} #{gets.chomp}"
+          line_to_replace = /#{field_name} .*$/
+          gsub_file "test/factories/#{model.underscore}.rb", line_to_replace do
+            field_factory_code
+          end
+        end
+      end
     end
 
   end
