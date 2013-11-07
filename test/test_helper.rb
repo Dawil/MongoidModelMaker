@@ -1,6 +1,7 @@
 require 'minitest/unit'
 require 'minitest/autorun'
 require 'rails'
+require 'factory_girl_rails'
 require 'rubygems'
 require 'mocha/setup'
 require_relative '../lib/mongoid_model_maker'
