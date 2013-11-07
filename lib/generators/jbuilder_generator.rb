@@ -30,5 +30,27 @@ RUBY
 json.partial! "#{model_plural}/#{model_singular}.json.jbuilder", #{model_singular}: @#{model_singular}
 RUBY
     end
+
+    def add_singular_relations
+      if options[:parent] and not options[:plural]
+        append_to_file "app/views/#{options[:parent].pluralize.underscore}/_#{options[:parent].underscore}.json.jbuilder", <<RUBY
+json.#{model.underscore} do
+  json.partial! "app/views/#{model.pluralize.underscore}/#{model.underscore}.json.jbuilder", #{model.underscore}: #{options[:parent].underscore}.#{model.underscore}
+end if #{options[:parent].underscore}.#{model.underscore}
+RUBY
+      end
+    end
+
+    def add_plural_relations
+      if options[:parent] and options[:plural]
+        append_to_file "app/views/#{options[:parent].pluralize.underscore}/_#{options[:parent].underscore}.json.jbuilder", <<RUBY
+json.#{model.pluralize.underscore} do
+  json.array!(#{options[:parent].underscore}.#{model.pluralize.underscore}) do |#{model.underscore}|
+    json.partial! "app/views/#{model.pluralize.underscore}/#{model.underscore}.json.jbuilder", #{model.underscore}: #{model.underscore}
+  end
+end
+RUBY
+      end
+    end
   end
 end
