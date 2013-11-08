@@ -60,7 +60,7 @@ RUBY
 json.id person.id
 json.extract! person, :created_at, :updated_at, :first, :last
 json.dog do
-  json.partial! "app/views/dogs/dog.json.jbuilder", dog: person.dog
+  json.partial! "dogs/dog.json.jbuilder", dog: person.dog
 end if person.dog
 RUBY
     end
@@ -75,7 +75,7 @@ RUBY
 json.id person.id
 json.extract! person, :created_at, :updated_at, :first, :last
 json.doggie do
-  json.partial! "app/views/dogs/dog.json.jbuilder", doggie: person.doggie
+  json.partial! "dogs/dog.json.jbuilder", doggie: person.doggie
 end if person.doggie
 RUBY
     end
@@ -91,7 +91,7 @@ json.id person.id
 json.extract! person, :created_at, :updated_at, :first, :last
 json.dogs do
   json.array!(person.dogs) do |dog|
-    json.partial! "app/views/dogs/dog.json.jbuilder", dog: dog
+    json.partial! "dogs/dog.json.jbuilder", dog: dog
   end
 end
 RUBY
@@ -108,7 +108,7 @@ json.id person.id
 json.extract! person, :created_at, :updated_at, :first, :last
 json.doggies do
   json.array!(person.doggies) do |doggie|
-    json.partial! "app/views/dogs/dog.json.jbuilder", doggie: doggie
+    json.partial! "dogs/dog.json.jbuilder", doggie: doggie
   end
 end
 RUBY

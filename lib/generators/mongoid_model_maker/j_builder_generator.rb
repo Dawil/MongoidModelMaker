@@ -39,7 +39,7 @@ RUBY
         model_name = (options[:child_synonym] or model)
         append_to_file "app/views/#{options[:parent].pluralize.underscore}/_#{options[:parent].underscore}.json.jbuilder", <<RUBY
 json.#{model_name.underscore} do
-  json.partial! "app/views/#{model.pluralize.underscore}/#{model.underscore}.json.jbuilder", #{model_name.underscore}: #{options[:parent].underscore}.#{model_name.underscore}
+  json.partial! "#{model.pluralize.underscore}/#{model.underscore}.json.jbuilder", #{model_name.underscore}: #{options[:parent].underscore}.#{model_name.underscore}
 end if #{options[:parent].underscore}.#{model_name.underscore}
 RUBY
       end
@@ -51,7 +51,7 @@ RUBY
         append_to_file "app/views/#{options[:parent].pluralize.underscore}/_#{options[:parent].underscore}.json.jbuilder", <<RUBY
 json.#{model_name.pluralize.underscore} do
   json.array!(#{options[:parent].underscore}.#{model_name.pluralize.underscore}) do |#{model_name.underscore}|
-    json.partial! "app/views/#{model.pluralize.underscore}/#{model.underscore}.json.jbuilder", #{model_name.underscore}: #{model_name.underscore}
+    json.partial! "#{model.pluralize.underscore}/#{model.underscore}.json.jbuilder", #{model_name.underscore}: #{model_name.underscore}
   end
 end
 RUBY
