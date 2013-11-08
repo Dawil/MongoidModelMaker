@@ -22,7 +22,7 @@ module MongoidModelMaker
           "#{field["name"]}:#{field["type"]}"
         end
         args << '--timestamps'
-        Rails::Generators.invoke "mongoid_model_maker:scaffold", args
+        Rails::Generators.invoke "rails:scaffold", args
       end
     end
 
