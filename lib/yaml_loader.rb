@@ -16,9 +16,12 @@ module MongoidModelMaker
     #   invokes scaffold generator many times
     def run_scaffolds
       @file.each_pair do |class_name, spec|
-        args = class_name + ' ' + spec["fields"].map do |field|
+        args = []
+        args << class_name 
+        args += spec["fields"].map do |field|
           "#{field["name"]}:#{field["type"]}"
-        end.join(' ') + ' --timestamps'
+        end
+        args << '--timestamps'
         Rails::Generators.invoke "scaffold", args
       end
     end
@@ -26,9 +29,9 @@ module MongoidModelMaker
     def run_relations
       @file.each_pair do |class_name, spec|
         if spec["relation"]
-          args = class_name
-          args += " --parent=#{spec["relation"]["parent"]}"
-          args += " --relation=#{spec["relation"]["type"]}"
+          args = [class_name]
+          args << "--parent=#{spec["relation"]["parent"]}"
+          args << "--relation=#{spec["relation"]["type"]}"
           Rails::Generators.invoke "relations", args
         end
       end
@@ -36,12 +39,13 @@ module MongoidModelMaker
 
     def run_factories
       @file.each_pair do |class_name, spec|
-        args = class_name + ' ' + spec["fields"].map do |field|
+        args = [class_name]
+        args += spec["fields"].map do |field|
           "#{field["name"]}:#{field["type"]}"
-        end.join(' ')
+        end
         if spec["relation"]
-          args += " --plural=#{%w(has_many embeds_many).include? spec["relation"]["type"]}" if spec["relation"]["type"]
-          args += " --parent=#{spec["relation"]["parent"]}" if spec["relation"]["parent"]
+          args << "--plural=#{%w(has_many embeds_many).include? spec["relation"]["type"]}" if spec["relation"]["type"]
+          args << "--parent=#{spec["relation"]["parent"]}" if spec["relation"]["parent"]
         end
         Rails::Generators.invoke "factories", args
       end
@@ -49,12 +53,13 @@ module MongoidModelMaker
 
     def run_jbuilders
       @file.each_pair do |class_name, spec|
-        args = class_name + ' ' + spec["fields"].map do |field|
+        args = [class_name] 
+        args += spec["fields"].map do |field|
           "#{field["name"]}:#{field["type"]}"
-        end.join(' ')
+        end
         if spec["relation"]
-          args += " --plural=#{%w(has_many embeds_many).include? spec["relation"]["type"]}" if spec["relation"]["type"]
-          args += " --parent=#{spec["relation"]["parent"]}" if spec["relation"]["parent"]
+          args << "--plural=#{%w(has_many embeds_many).include? spec["relation"]["type"]}" if spec["relation"]["type"]
+          args << "--parent=#{spec["relation"]["parent"]}" if spec["relation"]["parent"]
         end
         Rails::Generators.invoke "jbuilder", args
       end
