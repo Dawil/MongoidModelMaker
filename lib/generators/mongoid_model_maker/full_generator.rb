@@ -1,6 +1,6 @@
 require 'rails'
 require 'rails/generators'
-require_relative '../yaml_loader'
+require_relative '../../yaml_loader'
 
 module MongoidModelMaker
   class FullGenerator < Rails::Generators::Base
