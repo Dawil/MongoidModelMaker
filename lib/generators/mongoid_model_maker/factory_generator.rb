@@ -5,13 +5,12 @@ module MongoidModelMaker
   class FactoryGenerator < Rails::Generators::Base
     argument :model, type: :string, required: true, desc: "Name of model"
     argument :fields, type: :array, required: false, desc: "List of space separated pairs, colon separated, of field name and field type"
-    class_option :read_factories, type: :boolean, default: false, required: false, desc: "If true will read one line of ruby code form stdin for each field, respectively"
     class_option :parent, type: :string, required: false, desc: "Name of parent model"
     # TODO instead of plural, it should be relation_type, and infer plurality
     class_option :plural, type: :boolean, required: false, desc: "Type of parent model relationship"
 
     def call_factory_girl_generator
-      Rails::Generators.invoke "factory_girl:model", [model, fields].flatten
+      Rails::Generators.invoke "factory_girl:model", [model, fields, '--dir=spec'].flatten
     end
 
     def add_singular_references_in_parent_factory
@@ -39,10 +38,11 @@ RUBY
     end
 
     def add_custom_factory_code
-      if options[:read_factories]
-        fields.each do |field|
-          field_name = field.split(':').first
-          field_factory_code = "#{field_name} #{gets.chomp}"
+      fields.each do |field|
+        field_name, field_type = field.split(':')
+        factory_code = field.split(':')[2..-1].join(':')
+        if factory_code != ""
+          field_factory_code = "#{field_name} #{factory_code}"
           line_to_replace = /#{field_name} .*$/
           gsub_file "spec/factories/#{model.pluralize.underscore}.rb", line_to_replace do
             field_factory_code

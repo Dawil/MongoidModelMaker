@@ -8,7 +8,7 @@ module MongoidModelMaker
     setup :prepare_destination
 
     test "calls factory_girl generator correctly" do
-      Rails::Generators.stubs(:invoke).once.with( "factory_girl:model", %w(person first:string last:string) )
+      Rails::Generators.expects(:invoke).with( "factory_girl:model", %w(person first:string last:string --dir=spec) )
       run_generator %w(person first:string last:string)
     end
 
@@ -59,8 +59,6 @@ RUBY
     end
 
     test "adds custom factory code" do
-      FactoryGenerator.any_instance.stubs(:gets)
-        .returns("{ Faker::Name.first_name }\n", "{ Faker::Name.last_name }\n")
       @file_helper.create_file "tmp/spec/factories/people.rb", <<RUBY
 FactoryGirl.define do
   factory :person do
@@ -70,7 +68,7 @@ FactoryGirl.define do
 end
 RUBY
       Rails::Generators.stubs(:invoke).once
-      run_generator %w(person first:string last:string --read_factories=true)
+      run_generator ["person", "first:string:{ Faker::Name.first_name }", "last:string:{ Faker::Name.last_name }"]
       assert_file "spec/factories/people.rb", <<RUBY
 FactoryGirl.define do
   factory :person do

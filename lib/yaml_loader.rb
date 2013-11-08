@@ -41,25 +41,13 @@ module MongoidModelMaker
       @file.each_pair do |class_name, spec|
         args = [class_name]
         args += spec["fields"].map do |field|
-          "#{field["name"]}:#{field["type"]}"
+          "#{field["name"]}:#{field["type"]}" + if field["factory"] then ":#{field["factory"].chomp}" else '' end
         end
         if spec["relation"]
           args << "--plural=#{%w(has_many embeds_many).include? spec["relation"]["type"]}" if spec["relation"]["type"]
           args << "--parent=#{spec["relation"]["parent"]}" if spec["relation"]["parent"]
         end
-        if spec["fields"].any? { |field| field["factory"] }
-          args << "--read_factories=true" 
-          myin, myout = IO.pipe
-          spec["fields"].each do |field|
-            myout.write field["factory"] + "\n"
-          end
-          oldin = $stdin
-          $stdin = myin
-          Rails::Generators.invoke "mongoid_model_maker:factory", args
-          $stdin = oldin
-        else
-          Rails::Generators.invoke "mongoid_model_maker:factory", args
-        end
+        Rails::Generators.invoke "mongoid_model_maker:factory", args
       end
     end
 

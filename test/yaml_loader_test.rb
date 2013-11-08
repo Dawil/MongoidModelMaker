@@ -23,6 +23,12 @@ module MongoidModelMaker
       @models.run_factories
     end
 
+    def test_factories_with_custom_code
+      @models = MongoidModelMaker::Models.new File.join( __dir__, "fixtures/simple_model_with_factories.yaml" )
+      Rails::Generators.stubs(:invoke).with("mongoid_model_maker:factory", %w(person first:string:{\ Faker::Name.first_name\ } last:string:{\ Faker::Name.last_name\ }))
+      @models.run_factories
+    end
+
     def test_jbuilders
       @models = MongoidModelMaker::Models.new File.join( __dir__, "fixtures/double_model.yaml" )
       Rails::Generators.expects(:invoke).with("mongoid_model_maker:j_builder", %w(person first:string last:string))

@@ -1,0 +1,10 @@
+person:
+  fields:
+  - name: first
+    type: string
+    factory: |
+      { Faker::Name.first_name }
+  - name: last
+    type: string
+    factory: |
+      { Faker::Name.last_name }
