@@ -16,6 +16,13 @@ module MongoidModelMaker
       @models.run_relations
     end
 
+    def test_relations_with_synonyms
+      @models = MongoidModelMaker::Models.new File.join( __dir__, "fixtures/double_model_with_synonyms.yaml" )
+      Rails::Generators.expects(:invoke)
+        .with("mongoid_model_maker:relation", %w(--child=dog --parent=person --relation=embeds_many --child_synonym=doggie))
+      @models.run_relations
+    end
+
     def test_factories
       @models = MongoidModelMaker::Models.new File.join( __dir__, "fixtures/double_model.yaml" )
       Rails::Generators.expects(:invoke).with("mongoid_model_maker:factory", %w(person first:string last:string))

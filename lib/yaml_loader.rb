@@ -32,6 +32,7 @@ module MongoidModelMaker
           args = ['--child=' + class_name]
           args << "--parent=#{spec["relation"]["parent"]}"
           args << "--relation=#{spec["relation"]["type"]}"
+          args << "--child_synonym=#{spec["relation"]["synonym"]}" if spec["relation"]["synonym"]
           Rails::Generators.invoke "mongoid_model_maker:relation", args
         end
       end
