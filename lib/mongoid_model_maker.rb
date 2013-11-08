@@ -1,5 +1,4 @@
 require_relative "version"
-require_relative "generators/mongoid_model_maker/scaffold_generator"
 require_relative "generators/mongoid_model_maker/jbuilder_generator"
 require_relative "generators/mongoid_model_maker/factory_generator"
 require_relative "generators/mongoid_model_maker/relation/relation_generator"

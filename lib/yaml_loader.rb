@@ -29,7 +29,7 @@ module MongoidModelMaker
     def run_relations
       @file.each_pair do |class_name, spec|
         if spec["relation"]
-          args = [class_name]
+          args = ['--child=' + class_name]
           args << "--parent=#{spec["relation"]["parent"]}"
           args << "--relation=#{spec["relation"]["type"]}"
           Rails::Generators.invoke "mongoid_model_maker:relation", args

@@ -3,7 +3,7 @@ require_relative 'test_helper'
 module MongoidModelMaker
   class FactoriesTest < Rails::Generators::TestCase
     include MongoidModelMaker::TestUtils
-    tests MongoidModelMaker::FactoriesGenerator
+    tests MongoidModelMaker::FactoryGenerator
     destination File.expand_path("../tmp", File.dirname(__FILE__))
     setup :prepare_destination
 
@@ -13,7 +13,7 @@ module MongoidModelMaker
     end
 
     test "adds singular references in parent factory" do
-      @file_helper.create_file "tmp/test/factories/person.rb", <<RUBY
+      @file_helper.create_file "tmp/spec/factories/person.rb", <<RUBY
 FactoryGirl.define do
   factory :person do
     first "MyString"
@@ -23,7 +23,7 @@ end
 RUBY
       Rails::Generators.stubs(:invoke).once
       run_generator %w(dog name:string breed:string --parent=person)
-      assert_file "test/factories/person.rb", <<RUBY
+      assert_file "spec/factories/person.rb", <<RUBY
 FactoryGirl.define do
   factory :person do
     dog { FactoryGirl.build( :dog ) }
@@ -35,7 +35,7 @@ RUBY
     end
 
     test "adds plural references in parent factory" do
-      @file_helper.create_file "tmp/test/factories/person.rb", <<RUBY
+      @file_helper.create_file "tmp/spec/factories/person.rb", <<RUBY
 FactoryGirl.define do
   factory :person do
     first "MyString"
@@ -45,7 +45,7 @@ end
 RUBY
       Rails::Generators.stubs(:invoke).once
       run_generator %w(dog name:string breed:string --parent=person --plural=true)
-      assert_file "test/factories/person.rb", <<RUBY
+      assert_file "spec/factories/person.rb", <<RUBY
 FactoryGirl.define do
   factory :person do
     after(:create) do |person|
@@ -59,9 +59,9 @@ RUBY
     end
 
     test "adds custom factory code" do
-      FactoriesGenerator.any_instance.stubs(:gets)
+      FactoryGenerator.any_instance.stubs(:gets)
         .returns("{ Faker::Name.first_name }\n", "{ Faker::Name.last_name }\n")
-      @file_helper.create_file "tmp/test/factories/person.rb", <<RUBY
+      @file_helper.create_file "tmp/spec/factories/person.rb", <<RUBY
 FactoryGirl.define do
   factory :person do
     first "MyString"
@@ -71,7 +71,7 @@ end
 RUBY
       Rails::Generators.stubs(:invoke).once
       run_generator %w(person first:string last:string --read_factories=true)
-      assert_file "test/factories/person.rb", <<RUBY
+      assert_file "spec/factories/person.rb", <<RUBY
 FactoryGirl.define do
   factory :person do
     first { Faker::Name.first_name }
