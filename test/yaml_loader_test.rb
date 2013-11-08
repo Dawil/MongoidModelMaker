@@ -30,6 +30,13 @@ module MongoidModelMaker
       @models.run_factories
     end
 
+    def test_factories_with_syonyms
+      @models = MongoidModelMaker::Models.new File.join( __dir__, "fixtures/double_model_with_synonyms.yaml" )
+      Rails::Generators.expects(:invoke).with("mongoid_model_maker:factory", %w(person first:string last:string))
+      Rails::Generators.expects(:invoke).with("mongoid_model_maker:factory", %w(dog name:string breed:string --plural=true --parent=person --child_synonym=doggie))
+      @models.run_factories
+    end
+
     def test_factories_with_custom_code
       @models = MongoidModelMaker::Models.new File.join( __dir__, "fixtures/simple_model_with_factories.yaml" )
       Rails::Generators.stubs(:invoke).with("mongoid_model_maker:factory", %w(person first:string:{\ Faker::Name.first_name\ } last:string:{\ Faker::Name.last_name\ }))
@@ -40,6 +47,13 @@ module MongoidModelMaker
       @models = MongoidModelMaker::Models.new File.join( __dir__, "fixtures/double_model.yaml" )
       Rails::Generators.expects(:invoke).with("mongoid_model_maker:j_builder", %w(person first:string last:string))
       Rails::Generators.expects(:invoke).with("mongoid_model_maker:j_builder", %w(dog name:string breed:string --plural=true --parent=person))
+      @models.run_jbuilders
+    end
+
+    def test_jbuilders_with_synonyms
+      @models = MongoidModelMaker::Models.new File.join( __dir__, "fixtures/double_model_with_synonyms.yaml" )
+      Rails::Generators.expects(:invoke).with("mongoid_model_maker:j_builder", %w(person first:string last:string))
+      Rails::Generators.expects(:invoke).with("mongoid_model_maker:j_builder", %w(dog name:string breed:string --plural=true --parent=person --child_synonym=doggie))
       @models.run_jbuilders
     end
 

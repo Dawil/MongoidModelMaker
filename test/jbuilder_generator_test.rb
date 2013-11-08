@@ -61,6 +61,21 @@ end if person.dog
 RUBY
     end
 
+    test "adds a singular reference to partial in parent with child synonym" do
+      @file_helper.create_file "tmp/app/views/people/_person.json.jbuilder", <<RUBY
+json.id person.id
+json.extract! person, :created_at, :updated_at, :first, :last
+RUBY
+      run_generator %w(dog name:string breed:string --parent=person --child_synonym=doggie)
+      assert_file "app/views/people/_person.json.jbuilder",  <<RUBY
+json.id person.id
+json.extract! person, :created_at, :updated_at, :first, :last
+json.doggie do
+  json.partial! "app/views/dogs/dog.json.jbuilder", doggie: person.doggie
+end if person.doggie
+RUBY
+    end
+
     test "adds a plural reference to partial in parent" do
       @file_helper.create_file "tmp/app/views/people/_person.json.jbuilder", <<RUBY
 json.id person.id
@@ -73,6 +88,23 @@ json.extract! person, :created_at, :updated_at, :first, :last
 json.dogs do
   json.array!(person.dogs) do |dog|
     json.partial! "app/views/dogs/dog.json.jbuilder", dog: dog
+  end
+end
+RUBY
+    end
+
+    test "adds a plural reference to partial in parent with child synonym" do
+      @file_helper.create_file "tmp/app/views/people/_person.json.jbuilder", <<RUBY
+json.id person.id
+json.extract! person, :created_at, :updated_at, :first, :last
+RUBY
+      run_generator %w(dog name:string breed:string --parent=person --plural=true --child_synonym=doggie)
+      assert_file "app/views/people/_person.json.jbuilder",  <<RUBY
+json.id person.id
+json.extract! person, :created_at, :updated_at, :first, :last
+json.doggies do
+  json.array!(person.doggies) do |doggie|
+    json.partial! "app/views/dogs/dog.json.jbuilder", doggie: doggie
   end
 end
 RUBY

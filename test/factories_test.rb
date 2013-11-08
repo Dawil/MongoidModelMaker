@@ -34,6 +34,28 @@ end
 RUBY
     end
 
+    test "adds singular references in parent factory with child synonym" do
+      @file_helper.create_file "tmp/spec/factories/people.rb", <<RUBY
+FactoryGirl.define do
+  factory :person do
+    first "MyString"
+    last "MyString"
+  end
+end
+RUBY
+      Rails::Generators.stubs(:invoke).once
+      run_generator %w(dog name:string breed:string --parent=person --child_synonym=doggie)
+      assert_file "spec/factories/people.rb", <<RUBY
+FactoryGirl.define do
+  factory :person do
+    doggie { FactoryGirl.build( :dog ) }
+    first "MyString"
+    last "MyString"
+  end
+end
+RUBY
+    end
+
     test "adds plural references in parent factory" do
       @file_helper.create_file "tmp/spec/factories/people.rb", <<RUBY
 FactoryGirl.define do
@@ -78,5 +100,6 @@ FactoryGirl.define do
 end
 RUBY
     end
+
   end
 end
