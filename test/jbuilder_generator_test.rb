@@ -8,15 +8,19 @@ module MongoidModelMaker
     setup :prepare_destination
 
     test "creates simple jbuilder partial" do
-      @file_helper.vars = 
-      { 
-        model_name: "person",
-        fields: %w(:first :last)
-      }
       run_generator %w(person first:string last:string)
       file_contents = <<RUBY
 json.id person.id
 json.extract! person, :created_at, :updated_at, :first, :last
+RUBY
+      assert_file "app/views/people/_person.json.jbuilder", file_contents
+    end
+
+    test "creates simple jbuilder partial with child synonym" do
+      run_generator %w(person first:string last:string --child_synonym=peep)
+      file_contents = <<RUBY
+json.id peep.id
+json.extract! peep, :created_at, :updated_at, :first, :last
 RUBY
       assert_file "app/views/people/_person.json.jbuilder", file_contents
     end

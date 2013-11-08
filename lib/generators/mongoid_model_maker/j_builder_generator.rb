@@ -21,16 +21,16 @@ RUBY
 
     def call_partial
       model_name = (options[:child_synonym] or model)
-      model_plural = model_name.pluralize.underscore
-      model_singular = model_name.underscore
+      model_plural = model.pluralize.underscore
+      model_singular = model.underscore
       create_file "app/views/#{model_plural}/index.json.jbuilder", <<RUBY
-json.array!(@#{model_plural}) do |#{model_singular}|
-  json.partial! "#{model_plural}/#{model_singular}.json.jbuilder", #{model_singular}: #{model_singular}
+json.array!(@#{model_plural}) do |#{model_name}|
+  json.partial! "#{model_plural}/#{model}.json.jbuilder", #{model_singular}: #{model_singular}
 end
 RUBY
 
       create_file "app/views/#{model_plural}/show.json.jbuilder", <<RUBY
-json.partial! "#{model_plural}/#{model_singular}.json.jbuilder", #{model_singular}: @#{model_singular}
+json.partial! "#{model_plural}/#{model}.json.jbuilder", #{model_singular}: @#{model_singular}
 RUBY
     end
 
