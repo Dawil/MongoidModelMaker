@@ -48,7 +48,7 @@ RUBY
             field_factory_code
           end
         end
-      end
+      end if fields
     end
 
   end
