@@ -22,7 +22,7 @@ module MongoidModelMaker
     def model_relation
       include_text = "include Mongoid::Timestamps\n"
       n = (options[:child_synonym] or options[:child])
-      n = n.pluralize if relation_type == "embeds_many"
+      n = n.pluralize if options[:relation] == "embeds_many"
 
       inject_into_file "app/models/#{options[:parent].underscore}.rb", after: include_text do
 <<RUBY

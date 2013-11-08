@@ -36,6 +36,13 @@ module MongoidModelMaker
       assert_file "app/models/person.rb", /accepts_nested_attributes_for :dog/
     end
 
+    test "adds plural relation to parent model" do
+      create_double_models
+      run_generator %w(--child=dog --parent=person --relation=embeds_many)
+      assert_file "app/models/person.rb", /embeds_many :dogs/
+      assert_file "app/models/person.rb", /accepts_nested_attributes_for :dogs/
+    end
+
     test "adds correct synonym" do
       create_double_models
       run_generator %w(--child=dog --parent=person --relation=embeds_one --child_synonym=doggie)
