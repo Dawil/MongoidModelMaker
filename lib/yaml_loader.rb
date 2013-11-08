@@ -66,18 +66,5 @@ module MongoidModelMaker
       run_factories
       run_jbuilders
     end
-  private
-    # create model representation
-    def yaml_to_classes file_hash
-      # add the top level classes
-      classes = {}
-      file_hash.find_all(&:without_parents).each_pair do |class_name,spec|
-      end
-      # add the immediate children classes until they're all gone
-    end
-
-    def without_parents class_def
-      class_def["relation"].nil?
-    end
   end
 end
