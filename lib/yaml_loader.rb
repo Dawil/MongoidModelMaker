@@ -22,7 +22,7 @@ module MongoidModelMaker
           "#{field["name"]}:#{field["type"]}"
         end
         args << '--timestamps'
-        Rails::Generators.invoke "scaffold", args
+        Rails::Generators.invoke "mongoid_model_maker:scaffold", args
       end
     end
 
@@ -32,7 +32,7 @@ module MongoidModelMaker
           args = [class_name]
           args << "--parent=#{spec["relation"]["parent"]}"
           args << "--relation=#{spec["relation"]["type"]}"
-          Rails::Generators.invoke "relation", args
+          Rails::Generators.invoke "mongoid_model_maker:relation", args
         end
       end
     end
@@ -47,7 +47,7 @@ module MongoidModelMaker
           args << "--plural=#{%w(has_many embeds_many).include? spec["relation"]["type"]}" if spec["relation"]["type"]
           args << "--parent=#{spec["relation"]["parent"]}" if spec["relation"]["parent"]
         end
-        Rails::Generators.invoke "factory", args
+        Rails::Generators.invoke "mongoid_model_maker:factory", args
       end
     end
 
@@ -61,7 +61,7 @@ module MongoidModelMaker
           args << "--plural=#{%w(has_many embeds_many).include? spec["relation"]["type"]}" if spec["relation"]["type"]
           args << "--parent=#{spec["relation"]["parent"]}" if spec["relation"]["parent"]
         end
-        Rails::Generators.invoke "jbuilder", args
+        Rails::Generators.invoke "mongoid_model_maker:j_builder", args
       end
     end
 
