@@ -2,7 +2,7 @@ require 'rails'
 require 'rails/generators'
 
 module MongoidModelMaker
-  class FactoriesGenerator < Rails::Generators::Base
+  class FactoryGenerator < Rails::Generators::Base
     argument :model, type: :string, required: true, desc: "Name of model"
     argument :fields, type: :array, desc: "List of space separated pairs, colon separated, of field name and field type"
     class_option :read_factories, type: :boolean, default: false, required: false, desc: "If true will read one line of ruby code form stdin for each field, respectively"

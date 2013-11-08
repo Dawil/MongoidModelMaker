@@ -32,7 +32,7 @@ module MongoidModelMaker
           args = [class_name]
           args << "--parent=#{spec["relation"]["parent"]}"
           args << "--relation=#{spec["relation"]["type"]}"
-          Rails::Generators.invoke "relations", args
+          Rails::Generators.invoke "relation", args
         end
       end
     end
@@ -47,7 +47,7 @@ module MongoidModelMaker
           args << "--plural=#{%w(has_many embeds_many).include? spec["relation"]["type"]}" if spec["relation"]["type"]
           args << "--parent=#{spec["relation"]["parent"]}" if spec["relation"]["parent"]
         end
-        Rails::Generators.invoke "factories", args
+        Rails::Generators.invoke "factory", args
       end
     end
 

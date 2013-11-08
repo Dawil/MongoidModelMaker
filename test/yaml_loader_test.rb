@@ -12,14 +12,14 @@ module MongoidModelMaker
     def test_relations
       @models = MongoidModelMaker::Models.new File.join( __dir__, "fixtures/double_model.yaml" )
       Rails::Generators.expects(:invoke)
-        .with("relations", %w(dog --parent=person --relation=embeds_many))
+        .with("relation", %w(dog --parent=person --relation=embeds_many))
       @models.run_relations
     end
 
     def test_factories
       @models = MongoidModelMaker::Models.new File.join( __dir__, "fixtures/double_model.yaml" )
-      Rails::Generators.expects(:invoke).with("factories", %w(person first:string last:string))
-      Rails::Generators.expects(:invoke).with("factories", %w(dog name:string breed:string --plural=true --parent=person))
+      Rails::Generators.expects(:invoke).with("factory", %w(person first:string last:string))
+      Rails::Generators.expects(:invoke).with("factory", %w(dog name:string breed:string --plural=true --parent=person))
       @models.run_factories
     end
 
@@ -34,9 +34,9 @@ module MongoidModelMaker
       @models = MongoidModelMaker::Models.new File.join( __dir__, "fixtures/double_model.yaml" )
       Rails::Generators.expects(:invoke).with("scaffold", %w(person first:string last:string --timestamps))
       Rails::Generators.expects(:invoke).with("scaffold", %w(dog name:string breed:string --timestamps))
-      Rails::Generators.expects(:invoke).with("relations", %w(dog --parent=person --relation=embeds_many))
-      Rails::Generators.expects(:invoke).with("factories", %w(person first:string last:string))
-      Rails::Generators.expects(:invoke).with("factories", %w(dog name:string breed:string --plural=true --parent=person))
+      Rails::Generators.expects(:invoke).with("relation", %w(dog --parent=person --relation=embeds_many))
+      Rails::Generators.expects(:invoke).with("factory", %w(person first:string last:string))
+      Rails::Generators.expects(:invoke).with("factory", %w(dog name:string breed:string --plural=true --parent=person))
       Rails::Generators.expects(:invoke).with("jbuilder", %w(person first:string last:string))
       Rails::Generators.expects(:invoke).with("jbuilder", %w(dog name:string breed:string --plural=true --parent=person))
       @models.run_all
