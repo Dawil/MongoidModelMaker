@@ -21,7 +21,7 @@ module MongoidModelMaker
   private
     def model_relation
       include_text = "include Mongoid::Timestamps\n"
-      n = options[:child]
+      n = (options[:child_synonym] or options[:child])
       n = n.pluralize if relation_type == "embeds_many"
 
       inject_into_file "app/models/#{options[:parent].underscore}.rb", after: include_text do
@@ -52,13 +52,13 @@ RUBY
     # no guarrantees are made about the user's format
     # always assume you have to specify .camelize or .underscore
     def parent_class
-      options.parent_class
+      options.parent
     end
 
     # no guarrantees are made about the user's format
     # always assume you have to specify .camelize or .underscore
     def child_name
-      options.class_synonym or name
+      options.child_synonym or options.child
     end
   end
 end

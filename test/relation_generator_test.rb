@@ -36,5 +36,11 @@ module MongoidModelMaker
       assert_file "app/models/person.rb", /accepts_nested_attributes_for :dog/
     end
 
+    test "adds correct synonym" do
+      create_double_models
+      run_generator %w(--child=dog --parent=person --relation=embeds_one --child_synonym=doggie)
+      assert_file "app/models/dog.rb", /embedded_in :person, inverse_of: :doggie/
+      assert_file "app/models/person.rb", /embeds_one :doggie, class_name: 'Dog'/
+    end
   end
 end
