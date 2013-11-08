@@ -4,7 +4,7 @@ require 'rails/generators'
 module MongoidModelMaker
   class FactoryGenerator < Rails::Generators::Base
     argument :model, type: :string, required: true, desc: "Name of model"
-    argument :fields, type: :array, desc: "List of space separated pairs, colon separated, of field name and field type"
+    argument :fields, type: :array, required: false, desc: "List of space separated pairs, colon separated, of field name and field type"
     class_option :read_factories, type: :boolean, default: false, required: false, desc: "If true will read one line of ruby code form stdin for each field, respectively"
     class_option :parent, type: :string, required: false, desc: "Name of parent model"
     # TODO instead of plural, it should be relation_type, and infer plurality
