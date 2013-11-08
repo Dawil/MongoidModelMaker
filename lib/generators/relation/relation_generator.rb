@@ -41,22 +41,6 @@ RUBY
       end
     end
 
-    def factories_relation
-      inject_into_file "spec/factories/#{parent_class.pluralize.underscore}.rb", after: "factory :#{parent_class.underscore} do\n" do
-        if relation_type == "embeds_one"
-<<RUBY
-    #{child_name.underscore} { FactoryGirl.build( :#{name.underscore} ) }
-RUBY
-        elsif relation_type == "embeds_many"
-<<RUBY
-    after(:create) do |#{parent_class.underscore}|
-      FactoryGirl.create_list(:#{name.underscore}, 3, #{parent_class.underscore}: #{parent_class.underscore})
-    end
-RUBY
-        end
-      end
-    end
-
     def valid_relations
       %w(has_one has_many embeds_one embeds_many)
     end
