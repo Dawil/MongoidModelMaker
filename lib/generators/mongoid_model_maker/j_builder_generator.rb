@@ -4,7 +4,7 @@ require 'rails/generators'
 module MongoidModelMaker
   class JBuilderGenerator < Rails::Generators::Base
     argument :model, type: :string, required: true, desc: "Name of model to create"
-    argument :fields, type: :array, desc: "Space separated list of fields of format name:type"
+    argument :fields, type: :array, default: [], desc: "Space separated list of fields of format name:type"
     class_option :parent, type: :string, desc: "Parent model"
     class_option :plural, type: :boolean, default: false, desc: "True if the model is a plural (has_many, embedded_many) relationship"
     class_option :child_synonym, type: :string, required: false, default: nil

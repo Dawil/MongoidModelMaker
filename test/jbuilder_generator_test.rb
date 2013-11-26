@@ -16,6 +16,14 @@ RUBY
       assert_file "app/views/people/_person.json.jbuilder", file_contents
     end
 
+    test "works on a model with no fields" do
+      run_generator %w(person)
+      assert_file "app/views/people/_person.json.jbuilder", <<RUBY
+json.id person.id
+json.extract! person, :created_at, :updated_at
+RUBY
+    end
+
     test "creates simple jbuilder partial with child synonym" do
       run_generator %w(person first:string last:string --child_synonym=peep)
       file_contents = <<RUBY
