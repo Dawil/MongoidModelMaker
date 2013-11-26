@@ -13,92 +13,92 @@ module MongoidModelMaker
     end
 
     test "adds singular references in parent factory" do
-      @file_helper.create_file "tmp/spec/factories/people.rb", <<RUBY
-FactoryGirl.define do
-  factory :person do
-    first "MyString"
-    last "MyString"
-  end
-end
-RUBY
+      @file_helper.create_file "tmp/spec/factories/people.rb", <<-RUBY.gsub(/^#{'  ' * 3}/,'')
+      FactoryGirl.define do
+        factory :person do
+          first "MyString"
+          last "MyString"
+        end
+      end
+      RUBY
       Rails::Generators.stubs(:invoke).once
       run_generator %w(dog name:string breed:string --parent=person)
-      assert_file "spec/factories/people.rb", <<RUBY
-FactoryGirl.define do
-  factory :person do
-    dog { FactoryGirl.build( :dog ) }
-    first "MyString"
-    last "MyString"
-  end
-end
-RUBY
+      assert_file "spec/factories/people.rb", <<-RUBY.gsub(/^#{'  ' * 3}/,'')
+      FactoryGirl.define do
+        factory :person do
+          dog { FactoryGirl.build( :dog ) }
+          first "MyString"
+          last "MyString"
+        end
+      end
+      RUBY
     end
 
     test "adds singular references in parent factory with child synonym" do
-      @file_helper.create_file "tmp/spec/factories/people.rb", <<RUBY
-FactoryGirl.define do
-  factory :person do
-    first "MyString"
-    last "MyString"
-  end
-end
-RUBY
+      @file_helper.create_file "tmp/spec/factories/people.rb", <<-RUBY.gsub(/^#{'  ' * 3}/,'')
+      FactoryGirl.define do
+        factory :person do
+          first "MyString"
+          last "MyString"
+        end
+      end
+      RUBY
       Rails::Generators.stubs(:invoke).once
       run_generator %w(dog name:string breed:string --parent=person --child_synonym=doggie)
-      assert_file "spec/factories/people.rb", <<RUBY
-FactoryGirl.define do
-  factory :person do
-    doggie { FactoryGirl.build( :dog ) }
-    first "MyString"
-    last "MyString"
-  end
-end
-RUBY
+      assert_file "spec/factories/people.rb", <<-RUBY.gsub(/^#{'  ' * 3}/,'')
+      FactoryGirl.define do
+        factory :person do
+          doggie { FactoryGirl.build( :dog ) }
+          first "MyString"
+          last "MyString"
+        end
+      end
+      RUBY
     end
 
     test "adds plural references in parent factory" do
-      @file_helper.create_file "tmp/spec/factories/people.rb", <<RUBY
-FactoryGirl.define do
-  factory :person do
-    first "MyString"
-    last "MyString"
-  end
-end
-RUBY
+      @file_helper.create_file "tmp/spec/factories/people.rb", <<-RUBY.gsub(/^#{'  ' * 3}/,'')
+      FactoryGirl.define do
+        factory :person do
+          first "MyString"
+          last "MyString"
+        end
+      end
+      RUBY
       Rails::Generators.stubs(:invoke).once
       run_generator %w(dog name:string breed:string --parent=person --plural=true)
-      assert_file "spec/factories/people.rb", <<RUBY
-FactoryGirl.define do
-  factory :person do
-    after(:build) do |person|
-      FactoryGirl.build_list( :dog, [0,1,2,3,10].sample, person: person )
-    end
-    first "MyString"
-    last "MyString"
-  end
-end
-RUBY
+      assert_file "spec/factories/people.rb", <<-RUBY.gsub(/^#{'  ' * 3}/,'')
+      FactoryGirl.define do
+        factory :person do
+          after(:build) do |person|
+            FactoryGirl.build_list( :dog, [0,1,2,3,10].sample, person: person )
+          end
+          first "MyString"
+          last "MyString"
+        end
+      end
+      RUBY
     end
 
     test "adds custom factory code" do
-      @file_helper.create_file "tmp/spec/factories/people.rb", <<RUBY
-FactoryGirl.define do
-  factory :person do
-    first "MyString"
-    last "MyString"
-  end
-end
-RUBY
+      @file_helper.create_file "tmp/spec/factories/people.rb", <<-RUBY.gsub(/^#{'  ' * 3}/,'')
+      FactoryGirl.define do
+        factory :person do
+          first "MyString"
+          last "MyString"
+        end
+      end
+      RUBY
       Rails::Generators.stubs(:invoke).once
       run_generator ["person", "first:string:{ Faker::Name.first_name }", "last:string:{ Faker::Name.last_name }"]
-      assert_file "spec/factories/people.rb", <<RUBY
-FactoryGirl.define do
-  factory :person do
-    first { Faker::Name.first_name }
-    last { Faker::Name.last_name }
-  end
-end
-RUBY
+      assert_file "spec/factories/people.rb", <<-RUBY.gsub(/^#{'  ' * 3}/,'')
+      FactoryGirl.define do
+        factory :person do
+          first { Faker::Name.first_name }
+          last { Faker::Name.last_name }
+        end
+      end
+      RUBY
     end
 
   end
