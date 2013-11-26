@@ -8,7 +8,7 @@ module MongoidModelMaker
     setup :prepare_destination
 
     test "calls factory_girl generator correctly" do
-      Rails::Generators.expects(:invoke).with( "factory_girl:model", %w(person first:string last:string --dir=spec) )
+      Rails::Generators.expects(:invoke).with( "factory_girl:model", %w(person first:string last:string --dir=spec/factories/) )
       run_generator %w(person first:string last:string)
     end
 

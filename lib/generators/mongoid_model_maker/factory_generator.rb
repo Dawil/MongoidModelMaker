@@ -11,7 +11,7 @@ module MongoidModelMaker
     class_option :child_synonym, type: :string, required: false, default: nil
 
     def call_factory_girl_generator
-      Rails::Generators.invoke "factory_girl:model", [model, fields, '--dir=spec'].flatten
+      Rails::Generators.invoke "factory_girl:model", [model, fields, '--dir=spec/factories/'].flatten
     end
 
     def add_singular_references_in_parent_factory
