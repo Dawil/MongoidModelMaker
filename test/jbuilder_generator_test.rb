@@ -121,5 +121,20 @@ json.doggies do
 end
 RUBY
     end
+
+    test "use parent_synonym if present" do
+      @file_helper.create_file "tmp/app/views/people/_person.json.jbuilder", <<RUBY
+json.id peep.id
+json.extract! peep, :created_at, :updated_at, :first, :last
+RUBY
+      run_generator %w(dog name:string breed:string --parent=person --parent_synonym=peep --child_synonym=doggie)
+      assert_file "app/views/people/_person.json.jbuilder",  <<RUBY
+json.id peep.id
+json.extract! peep, :created_at, :updated_at, :first, :last
+json.doggie do
+  json.partial! "dogs/dog.json.jbuilder", doggie: peep.doggie
+end if peep.doggie
+RUBY
+    end
   end
 end

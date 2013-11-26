@@ -8,6 +8,7 @@ module MongoidModelMaker
     class_option :parent, type: :string, desc: "Parent model"
     class_option :plural, type: :boolean, default: false, desc: "True if the model is a plural (has_many, embedded_many) relationship"
     class_option :child_synonym, type: :string, required: false, default: nil
+    class_option :parent_synonym, type: :string, required: false, default: nil
 
     def create_partial
       model_name = (options[:child_synonym] or model)
@@ -37,10 +38,11 @@ RUBY
     def add_singular_relations
       if options[:parent] and not options[:plural]
         model_name = (options[:child_synonym] or model)
+        parent_name = (options[:parent_synonym] or options[:parent])
         append_to_file "app/views/#{options[:parent].pluralize.underscore}/_#{options[:parent].underscore}.json.jbuilder", <<RUBY
 json.#{model_name.underscore} do
-  json.partial! "#{model.pluralize.underscore}/#{model.underscore}.json.jbuilder", #{model_name.underscore}: #{options[:parent].underscore}.#{model_name.underscore}
-end if #{options[:parent].underscore}.#{model_name.underscore}
+  json.partial! "#{model.pluralize.underscore}/#{model.underscore}.json.jbuilder", #{model_name.underscore}: #{parent_name.underscore}.#{model_name.underscore}
+end if #{parent_name.underscore}.#{model_name.underscore}
 RUBY
       end
     end
@@ -48,9 +50,10 @@ RUBY
     def add_plural_relations
       if options[:parent] and options[:plural]
         model_name = (options[:child_synonym] or model)
+        parent_name = (options[:parent_synonym] or options[:parent])
         append_to_file "app/views/#{options[:parent].pluralize.underscore}/_#{options[:parent].underscore}.json.jbuilder", <<RUBY
 json.#{model_name.pluralize.underscore} do
-  json.array!(#{options[:parent].underscore}.#{model_name.pluralize.underscore}) do |#{model_name.underscore}|
+  json.array!(#{parent_name.underscore}.#{model_name.pluralize.underscore}) do |#{model_name.underscore}|
     json.partial! "#{model.pluralize.underscore}/#{model.underscore}.json.jbuilder", #{model_name.underscore}: #{model_name.underscore}
   end
 end
