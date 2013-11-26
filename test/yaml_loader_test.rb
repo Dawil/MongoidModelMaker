@@ -57,6 +57,14 @@ module MongoidModelMaker
       @models.run_jbuilders
     end
 
+    def test_jbuilders_with_nested_synonyms
+      @models = MongoidModelMaker::Models.new File.join( __dir__, "fixtures/triple_model_with_nested_synonyms.yaml" )
+      Rails::Generators.expects(:invoke).with("mongoid_model_maker:j_builder", %w(cat name:string))
+      Rails::Generators.expects(:invoke).with("mongoid_model_maker:j_builder", %w(person first:string last:string --plural=false --parent=cat --child_synonym=peep))
+      Rails::Generators.expects(:invoke).with("mongoid_model_maker:j_builder", %w(dog name:string breed:string --plural=true --parent=peep --child_synonym=doggie))
+      @models.run_jbuilders
+    end
+
     def test_run_all
       @models = MongoidModelMaker::Models.new File.join( __dir__, "fixtures/double_model.yaml" )
       Rails::Generators.expects(:invoke).with("rails:scaffold", %w(person first:string last:string --timestamps))

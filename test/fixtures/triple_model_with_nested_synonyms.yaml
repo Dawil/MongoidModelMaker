@@ -1,0 +1,24 @@
+cat:
+  fields:
+  - name: name
+    type: string
+person:
+  fields:
+  - name: first
+    type: string
+  - name: last
+    type: string
+  relation:
+    parent: cat
+    type: embeds_one
+    synonym: peep
+dog:
+  fields:
+  - name: name
+    type: string
+  - name: breed
+    type: string
+  relation:
+    parent: person
+    type: embeds_many
+    synonym: doggie

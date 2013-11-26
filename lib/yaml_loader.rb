@@ -61,7 +61,12 @@ module MongoidModelMaker
         end
         if spec["relation"]
           args << "--plural=#{%w(has_many embeds_many).include? spec["relation"]["type"]}" if spec["relation"]["type"]
-          args << "--parent=#{spec["relation"]["parent"]}" if spec["relation"]["parent"]
+          # if has a parent relation add it
+          if parent_name = spec["relation"]["parent"]
+            # if parent relation has a synonym use that instead
+            parent_name = @file[parent_name]["relation"]["synonym"] rescue parent_name
+            args << "--parent=#{parent_name}"
+          end
           args << "--child_synonym=#{spec["relation"]["synonym"]}" if spec["relation"]["synonym"]
         end
         Rails::Generators.invoke "mongoid_model_maker:j_builder", args
