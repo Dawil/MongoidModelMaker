@@ -31,8 +31,8 @@ RUBY
         after_text = "factory :#{options[:parent].underscore} do\n"
         inject_into_file "spec/factories/#{options[:parent].pluralize.underscore}.rb", after: after_text do
 <<RUBY
-    after(:create) do |#{options[:parent].underscore}|
-      FactoryGirl.create_list( :#{model.underscore}, 3, #{options[:parent].underscore}: #{options[:parent].underscore} )
+    after(:build) do |#{options[:parent].underscore}|
+      FactoryGirl.build_list( :#{model.underscore}, [0,1,2,3,10].sample, #{options[:parent].underscore}: #{options[:parent].underscore} )
     end
 RUBY
         end

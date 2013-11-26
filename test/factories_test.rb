@@ -70,8 +70,8 @@ RUBY
       assert_file "spec/factories/people.rb", <<RUBY
 FactoryGirl.define do
   factory :person do
-    after(:create) do |person|
-      FactoryGirl.create_list( :dog, 3, person: person )
+    after(:build) do |person|
+      FactoryGirl.build_list( :dog, [0,1,2,3,10].sample, person: person )
     end
     first "MyString"
     last "MyString"
