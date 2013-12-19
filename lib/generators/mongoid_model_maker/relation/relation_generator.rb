@@ -9,6 +9,8 @@ module MongoidModelMaker
     class_option :parent, type: :string, required: true, desc: "Parent class for mongoid relation"
     class_option :relation, type: :string, required: true, desc: "Type of mongoid relation"
     class_option :child_synonym, type: :string, default: nil, desc: "An alternative name to reference the model by"
+    class_option :child_validations, type: :string, default: "", desc: "Any validations for the child model as an escaped string"
+    class_option :parent_validations, type: :string, default: "", desc: "Any validations for the parent model as an escaped string"
 
     def main
       unless valid_relations.include? options[:relation]
@@ -24,20 +26,41 @@ module MongoidModelMaker
       n = (options[:child_synonym] or options[:child])
       n = n.pluralize if options[:relation] == "embeds_many"
 
+      # nested attributes
       inject_into_file "app/models/#{options[:parent].underscore}.rb", after: include_text do
-<<RUBY
+      <<-RUBY.gsub(/^#{'  ' * 3}/,'')
 
-  #{options[:relation]} :#{n.underscore}#{", class_name: '#{options[:child].camelize}'" if options[:child_synonym]}
+        #{options[:relation]} :#{n.underscore}#{", class_name: '#{options[:child].camelize}'" if options[:child_synonym]}
 
-  accepts_nested_attributes_for :#{n.underscore}
-RUBY
+        accepts_nested_attributes_for :#{n.underscore}
+      RUBY
       end
+
+      # embedded
       inject_into_file "app/models/#{options[:child].underscore}.rb", after: include_text do
-<<RUBY
+      <<-RUBY.gsub(/^#{'  ' * 3}/,'')
 
-  embedded_in :#{options[:parent].underscore}#{", inverse_of: :#{n.underscore}" if options[:child_synonym]}
+        embedded_in :#{options[:parent].underscore}#{", inverse_of: :#{n.underscore}" if options[:child_synonym]}
 
-RUBY
+      RUBY
+      end
+
+      # validations
+      inject_into_file "app/models/#{options[:child].underscore}.rb", after: include_text do
+        options[:child_validations].split('\n').map do |validation|
+        <<-RUBY.gsub(/^#{'  ' * 4}/,'')
+
+          #{validation}
+        RUBY
+        end.join("\n")
+      end
+      inject_into_file "app/models/#{options[:parent].underscore}.rb", after: include_text do
+        options[:parent_validations].split('\n').map do |validation|
+        <<-RUBY.gsub(/^#{'  ' * 4}/,'')
+
+          #{validation}
+        RUBY
+        end.join("\n")
       end
     end
 
