@@ -33,8 +33,8 @@ module MongoidModelMaker
           args << "--parent=#{spec["relation"]["parent"]}"
           args << "--relation=#{spec["relation"]["type"]}"
           args << "--child_synonym=#{spec["relation"]["synonym"]}" if spec["relation"]["synonym"]
-          args << "--parent_validations=#{spec["relation"]["validation"]}" if spec["relation"]["validation"]
-          args << "--child_validations=#{spec["validation"]}" if spec["validation"]
+          args << "--parent_validations=#{spec["relation"]["validation"].split("\n").join(';')}" if spec["relation"]["validation"]
+          args << "--child_validations=#{spec["validation"].split("\n").join(';')}" if spec["validation"]
           Rails::Generators.invoke "mongoid_model_maker:relation", args
         elsif spec["validation"]
           raise NotImplementedError, "The relation generator currently doesn't support validations on models without a parent"

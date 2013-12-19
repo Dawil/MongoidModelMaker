@@ -47,20 +47,10 @@ module MongoidModelMaker
 
       # validations
       inject_into_file "app/models/#{options[:child].underscore}.rb", after: include_text do
-        options[:child_validations].split('\n').map do |validation|
-        <<-RUBY.gsub(/^#{'  ' * 4}/,'')
-
-          #{validation}
-        RUBY
-        end.join("\n")
+        "\n" + options[:child_validations].split(';').join("\n") + "\n"
       end
       inject_into_file "app/models/#{options[:parent].underscore}.rb", after: include_text do
-        options[:parent_validations].split('\n').map do |validation|
-        <<-RUBY.gsub(/^#{'  ' * 4}/,'')
-
-          #{validation}
-        RUBY
-        end.join("\n")
+        "\n" + options[:parent_validations].split(';').join("\n") + "\n"
       end
     end
 

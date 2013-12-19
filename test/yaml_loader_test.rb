@@ -27,8 +27,8 @@ module MongoidModelMaker
       @models = MongoidModelMaker::Models.new File.join( __dir__, "fixtures/double_model_with_validations.yaml" )
       Rails::Generators.expects(:invoke)
         .with("mongoid_model_maker:relation", %w(--child=dog --parent=person --relation=embeds_one) +
-          ["--parent_validations=validates_presence_of :dog\n",
-           "--child_validations=validates_presence_of :name\nvalidates_presence_of :breed\n"])
+          ["--parent_validations=validates_presence_of :dog",
+           "--child_validations=validates_presence_of :name;validates_presence_of :breed"])
       @models.run_relations
     end
 
