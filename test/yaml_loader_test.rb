@@ -23,6 +23,10 @@ module MongoidModelMaker
       @models.run_relations
     end
 
+    ### IMPORTANT
+    # This test specifies that multiple validations be semicolon delimited.
+    # This is because of an unusual bug where the input after the first line
+    # was being ignored.
     def test_relations_with_validations
       @models = MongoidModelMaker::Models.new File.join( __dir__, "fixtures/double_model_with_validations.yaml" )
       Rails::Generators.expects(:invoke)
