@@ -1,0 +1,21 @@
+person:
+  fields:
+  - name: first
+    type: string
+  - name: last
+    type: string
+dog:
+  fields:
+  - name: name
+    type: string
+  - name: breed
+    type: string
+  validation: |
+    validates_presence_of :name
+    validates_presence_of :breed
+  relation:
+    parent: person
+    type: embeds_one
+    validation: |
+      validates_presence_of :dog
+
