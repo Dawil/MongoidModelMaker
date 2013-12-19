@@ -49,5 +49,21 @@ module MongoidModelMaker
       assert_file "app/models/dog.rb", /embedded_in :person, inverse_of: :doggie/
       assert_file "app/models/person.rb", /embeds_one :doggie, class_name: 'Dog'/
     end
+
+    test "adds validations for the child relation" do
+      create_double_models
+      puts run_generator %w(--child=dog --parent=person --relation=embeds_one) + ['--child_validations=validate_presence_of :name\nvalidate_presence_of :breed']
+      assert_file "app/models/dog.rb", /validate_presence_of :name/
+      assert_file "app/models/dog.rb", /validate_presence_of :breed/
+      puts `cat tmp/app/models/dog.rb`
+    end
+
+    test "adds validations for the parent relation" do
+      create_double_models
+      run_generator %w(--child=dog --parent=person --relation=embeds_one) + ['--parent_validations=validate_presence_of :first\nvalidate_presence_of :last']
+      assert_file "app/models/person.rb", /validate_presence_of :first/
+      assert_file "app/models/person.rb", /validate_presence_of :last/
+      puts `cat tmp/app/models/person.rb`
+    end
   end
 end
